@@ -22,3 +22,5 @@ Imports:
 Remotes:
   rstudio-education/gradethis,
   rundel/learnrhash
+URL: https://github.com/finnlindgren/FLlearnr
+BugReports: https://github.com/finnlindgren/FLlearnr/issues
