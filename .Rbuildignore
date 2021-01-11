@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
+^FLlearnr\.Rcheck$
+^FLlearnr.*\.tar\.gz$
+^FLlearnr.*\.tgz$
