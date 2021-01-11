@@ -20,7 +20,7 @@ Imports:
     tibble,
     rlang
 Remotes:
-  rstudio-education/gradethis,
+  rstudio-education/gradethis@f1a0aa4964c7b02bdb5329591adce2ac7d26160c,
   rundel/learnrhash
 URL: https://github.com/finnlindgren/FLlearnr
 BugReports: https://github.com/finnlindgren/FLlearnr/issues
