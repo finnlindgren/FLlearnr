@@ -5,6 +5,8 @@
 \alias{FL_autodecoder_ui}
 \alias{FL_ui}
 \alias{FL_encoder_ui}
+\alias{FL_add_question}
+\alias{FL_get_question_ids}
 \title{Custom learnr methods}
 \usage{
 FL_autodecoder_logic(question_ids = NULL)
@@ -14,6 +16,10 @@ FL_autodecoder_ui()
 FL_ui(url, add_summary = TRUE, before = TRUE)
 
 FL_encoder_ui(url, add_summary = TRUE)
+
+FL_add_question(question_ids)
+
+FL_get_question_ids()
 }
 \arguments{
 \item{question_ids}{character vector}

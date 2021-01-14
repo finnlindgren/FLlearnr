@@ -1,3 +1,5 @@
+.FLlearnr_envir <- new.env(parent = emptyenv())
+
 #' Custom learnr methods
 #'
 #' @param question_ids character vector
@@ -8,7 +10,11 @@
 FL_autodecoder_logic <- function(question_ids = NULL) {
   p <- parent.frame()
   learnrhash:::check_server_context(p)
-  assign("question_ids", question_ids, envir = p)
+  if (is.null(question_ids)) {
+    assign("question_ids", FL_get_question_ids(), envir = p)
+  } else {
+    assign("question_ids", question_ids, envir = p)
+  }
   local(
     {
       my_encoded_txt <- shiny::eventReactive(
@@ -103,7 +109,7 @@ FL_ui <- function(url, add_summary = TRUE, before = TRUE) {
     shiny::div(
       "If you have completed this assignment and are happy with all of your",
       "answers and solutions, please click the button below to generate your",
-      "hash and submit it using the form below:"
+      "submission hash and submit it using the form below:"
     )
   } else {
     shiny::div(
@@ -142,3 +148,42 @@ FL_encoder_ui <- function(url, add_summary = TRUE) {
 }
 
 
+#' @title Get access to the internal environment
+#' @keywords internal
+FL_env_get <- function() {
+  pkg_envir <- parent.env(environment())
+  envir <- get0(".FLlearnr_envir", envir = pkg_envir)
+  if (!is.environment(envir)) {
+    stop("Something went wrong: cannot find internal .FLlearnr_envir environment.")
+  }
+  envir
+}
+
+#' @export
+#' @rdname FL_learnr_methods
+FL_add_question <- function(question_ids) {
+  env <- FL_env_get()
+  env$.FLlearnr_question_ids <-
+    c(env$.FLlearnr_question_ids, question_ids)
+  invisible(env$.FLlearnr_question_ids)
+}
+
+#' @export
+#' @rdname FL_learnr_methods
+FL_get_question_ids <- function() {
+  env <- FL_env_get()
+  env$.FLlearnr_question_ids
+}
+
+# Documentation would clash with base .onLoad documentation
+# @title Initialise log storage and global options
+# @param libname a character string giving the library directory where the
+#   package defining the namespace was found.
+# @param pkgname a character string giving the name of the package.
+# @aliases namespace_hooks
+# @keywords internal
+# @rdname namespace_hooks
+.onLoad <- function(libname, pkgname) {
+  env <- FL_env_get()
+  assign(".FLlearnr_question_ids", character(0), envir = env)
+}
