@@ -198,12 +198,17 @@ FL_get_question_ids <- function() {
 
 #' Grade alternatives
 #' @param valid_answers A vector of valid answers
-#' @param envir grading environment
+#' @param .result The result to be checked for valid alternative
 #' @export
-grade_alternatives <- function(valid_answers, envir = parent.frame()) {
+grade_alternatives <- function(valid_answers, .result) {
   msg <- character(0)
-  if (!(envir$.result %in% valid_answers)) {
-    if (is.character(valid_answers[1])) {
+  if (is.null(.result) ||
+      (is.character(valid_answers[1]) &&
+       (!is.character(.result) ||
+        !(.result %in% valid_answers))) ||
+      (!is.character(valid_answers[1]) &&
+       !(.result %in% valid_answers))) {
+    if (is.character(valid_answers[1]) ) {
       msg <- c(msg,
                paste0(
                  "Please enter either ",
@@ -224,8 +229,14 @@ grade_alternatives <- function(valid_answers, envir = parent.frame()) {
     }
   }
   if (length(msg) == 0) {
-    graded(correct = TRUE, message = "Partial check ok! (Answer has valid syntax.)")
+    gradethis::graded(
+      correct = TRUE,
+      message = "Partial check ok! (Answer has valid syntax.)"
+    )
   } else {
-    graded(correct = FALSE, message = paste0(msg, collapse = ". "))
+    gradethis::graded(
+      correct = FALSE,
+      message = paste0(msg, collapse = ". ")
+    )
   }
 }
