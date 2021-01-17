@@ -198,25 +198,30 @@ FL_get_question_ids <- function() {
 
 #' Grade alternatives
 #' @param valid_answers A vector of valid answers
+#' @param envir grading environment
 #' @export
-grade_alternatives <- function(valid_answers) {
+grade_alternatives <- function(valid_answers, envir = parent.frame()) {
   msg <- character(0)
-  if (!(is.numeric(.result) &&
-        (.result %in% valid_answers))) {
+  if (!(is.numeric(envir$.result) &&
+        (envir$.result %in% valid_answers))) {
     if (is.character(valid_answers[1])) {
-      msg <- c(msg, "Please enter either ",
-               paste0('"',
-                      valid_answers[-length(valid_answers)],
-                      '"',
-                      collapse = ", "),
-               " or ",
-               '"',
-               valid_answers[length(valid_answers)],
-               '"')
+      msg <- c(msg,
+               paste0(
+                 "Please enter either ",
+                 paste0('"',
+                        valid_answers[-length(valid_answers)],
+                        '"',
+                        collapse = ", "),
+                 " or ",
+                 '"',
+                 valid_answers[length(valid_answers)],
+                 '"'))
     } else {
-      msg <- c(msg, "Please enter either ",
-               paste0(valid_answers[-length(valid_answers)], collapse = ", "),
-               " or ", valid_answers[length(valid_answers)])
+      msg <- c(msg,
+               paste0(
+                 "Please enter either ",
+                 paste0(valid_answers[-length(valid_answers)], collapse = ", "),
+                 " or ", valid_answers[length(valid_answers)]))
     }
   }
   if (length(msg) == 0) {

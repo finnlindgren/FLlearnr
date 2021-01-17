@@ -4,10 +4,12 @@
 \alias{grade_alternatives}
 \title{Grade alternatives}
 \usage{
-grade_alternatives(valid_answers)
+grade_alternatives(valid_answers, envir = parent.frame())
 }
 \arguments{
 \item{valid_answers}{A vector of valid answers}
+
+\item{envir}{grading environment}
 }
 \description{
 Grade alternatives
