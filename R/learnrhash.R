@@ -202,8 +202,7 @@ FL_get_question_ids <- function() {
 #' @export
 grade_alternatives <- function(valid_answers, envir = parent.frame()) {
   msg <- character(0)
-  if (!(is.numeric(envir$.result) &&
-        (envir$.result %in% valid_answers))) {
+  if (!(envir$.result %in% valid_answers)) {
     if (is.character(valid_answers[1])) {
       msg <- c(msg,
                paste0(
