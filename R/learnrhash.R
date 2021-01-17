@@ -187,3 +187,41 @@ FL_get_question_ids <- function() {
   env <- FL_env_get()
   assign(".FLlearnr_question_ids", character(0), envir = env)
 }
+
+
+
+
+
+
+
+
+
+#' Grade alternatives
+#' @param valid_answers A vector of valid answers
+#' @export
+grade_alternatives <- function(valid_answers) {
+  msg <- character(0)
+  if (!(is.numeric(.result) &&
+        (.result %in% valid_answers))) {
+    if (is.character(valid_answers[1])) {
+      msg <- c(msg, "Please enter either ",
+               paste0('"',
+                      valid_answers[-length(valid_answers)],
+                      '"',
+                      collapse = ", "),
+               " or ",
+               '"',
+               valid_answers[length(valid_answers)],
+               '"')
+    } else {
+      msg <- c(msg, "Please enter either ",
+               paste0(valid_answers[-length(valid_answers)], collapse = ", "),
+               " or ", valid_answers[length(valid_answers)])
+    }
+  }
+  if (length(msg) == 0) {
+    graded(correct = TRUE, message = "Partial check ok! (Answer has valid syntax.)")
+  } else {
+    graded(correct = FALSE, message = paste0(msg, collapse = ". "))
+  }
+}
