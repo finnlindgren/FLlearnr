@@ -4,7 +4,7 @@
 \alias{grade_alternatives}
 \title{Grade alternatives}
 \usage{
-grade_alternatives(valid_answers, .result)
+grade_alternatives(valid_answers, .result, multi = FALSE)
 }
 \arguments{
 \item{valid_answers}{A vector of valid answers}

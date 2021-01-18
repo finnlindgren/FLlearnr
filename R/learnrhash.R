@@ -199,15 +199,17 @@ FL_get_question_ids <- function() {
 #' Grade alternatives
 #' @param valid_answers A vector of valid answers
 #' @param .result The result to be checked for valid alternative
+#' @param multi
 #' @export
-grade_alternatives <- function(valid_answers, .result) {
+grade_alternatives <- function(valid_answers, .result, multi = FALSE) {
   msg <- character(0)
   if (is.null(.result) ||
+      (!multi && (length(.result) > 1)) ||
       (is.character(valid_answers[1]) &&
        (!is.character(.result) ||
-        !(.result %in% valid_answers))) ||
+        !all(.result %in% valid_answers))) ||
       (!is.character(valid_answers[1]) &&
-       !(.result %in% valid_answers))) {
+       !all(.result %in% valid_answers))) {
     if (is.character(valid_answers[1]) ) {
       msg <- c(msg,
                paste0(
@@ -219,13 +221,17 @@ grade_alternatives <- function(valid_answers, .result) {
                  " or ",
                  '"',
                  valid_answers[length(valid_answers)],
-                 '"'))
+                 '"',
+                 if (multi) ", or a vector of such values." else NULL)
+      )
     } else {
       msg <- c(msg,
                paste0(
                  "Please enter either ",
                  paste0(valid_answers[-length(valid_answers)], collapse = ", "),
-                 " or ", valid_answers[length(valid_answers)]))
+                 " or ", valid_answers[length(valid_answers)],
+                 if (multi) ", or a vector of such values." else NULL)
+      )
     }
   }
   if (length(msg) == 0) {
