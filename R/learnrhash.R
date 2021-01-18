@@ -199,7 +199,7 @@ FL_get_question_ids <- function() {
 #' Grade alternatives
 #' @param valid_answers A vector of valid answers
 #' @param .result The result to be checked for valid alternative
-#' @param multi
+#' @param multi logical; If TRUE, allow vector results. Default: FALSE
 #' @export
 grade_alternatives <- function(valid_answers, .result, multi = FALSE) {
   msg <- character(0)
@@ -208,8 +208,9 @@ grade_alternatives <- function(valid_answers, .result, multi = FALSE) {
       (is.character(valid_answers[1]) &&
        (!is.character(.result) ||
         !all(.result %in% valid_answers))) ||
-      (!is.character(valid_answers[1]) &&
-       !all(.result %in% valid_answers))) {
+      (is.numeric(valid_answers[1]) &&
+       (!is.numeric(.result) ||
+        !all(.result %in% valid_answers)))) {
     if (is.character(valid_answers[1]) ) {
       msg <- c(msg,
                paste0(

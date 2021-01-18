@@ -10,6 +10,8 @@ grade_alternatives(valid_answers, .result, multi = FALSE)
 \item{valid_answers}{A vector of valid answers}
 
 \item{.result}{The result to be checked for valid alternative}
+
+\item{multi}{logical; If TRUE, allow vector results. Default: FALSE}
 }
 \description{
 Grade alternatives

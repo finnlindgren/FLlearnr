@@ -1,7 +1,7 @@
 Package: FLlearnr
 Type: Package
 Title: Custom Methods for learnr
-Version: 0.1.4
+Version: 0.1.5
 Author: Finn Lindgren <finn.lindgren@gmail.com>
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Description: Provides additional and customised logic useful for learnr and
