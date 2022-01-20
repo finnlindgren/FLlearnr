@@ -9,7 +9,7 @@ Description: Provides additional and customised logic useful for learnr and
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Imports:
     learnr,
@@ -20,7 +20,7 @@ Imports:
     tibble,
     rlang
 Remotes:
-  rstudio-education/gradethis@f1a0aa4964c7b02bdb5329591adce2ac7d26160c,
+  rstudio/gradethis@f1a0aa4964c7b02bdb5329591adce2ac7d26160c,
   rundel/learnrhash
 URL: https://github.com/finnlindgren/FLlearnr
 BugReports: https://github.com/finnlindgren/FLlearnr/issues
