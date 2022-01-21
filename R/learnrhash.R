@@ -20,18 +20,52 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
       my_encoded_txt <- shiny::eventReactive(
         input$hash_generate,
         {
-          objs <- learnr:::get_all_state_objects(session)
-          objs <- learnr:::submissions_from_state_objects(objs)
-          if (strip_output) {
-            objs <- purrr::map(objs, function(x) {
-              if ((x$type == "exercise_submission") &&
-                  !is.null(x$data$output)) {
-                x$data$output <- list()
-              }
-              x
-            })
+          if (TRUE) {
+            state = learnr:::get_tutorial_state(session = session)
+            shiny::validate(shiny::need(length(state) > 0,
+                                        "No progress yet."))
+            user_state = purrr::map_dfr(state, identity,
+                                        .id = "label")
+            user_state = dplyr::group_by(user_state, .data$label,
+                                         .data$type, .data$correct)
+            user_state = dplyr::summarize(user_state, answer = list(.data$answer),
+                                          timestamp = dplyr::first(.data$timestamp),
+                                          .groups = "drop")
+            user_state = dplyr::relocate(user_state, .data$correct,
+                                         .before = .data$timestamp)
+            out <- learnrhash::encode_obj(user_state)
           }
-          learnrhash::encode_obj(objs)
+          if (FALSE){
+            objs <- learnr::get_tutorial_state(session = session)
+            print(str(objs))
+            if (strip_output) {
+              objs <- purrr::map(objs, function(x) {
+                if ((x$type == "exercise") &&
+                    !is.null(x$data) &&
+                    !is.null(x$data["output"])) {
+                  x$data["output"] <- list()
+                }
+                x
+              })
+            }
+
+            if (FALSE) {
+              objs <- learnr:::submissions_from_state_objects(objs)
+              print(str(objs))
+              if (strip_output) {
+                objs <- purrr::map(objs, function(x) {
+                  if ((x$type == "exercise_submission") &&
+                      !is.null(x$data["output"])) {
+                    x$data["output"] <- list()
+                  }
+                  x
+                })
+              }
+            }
+            out <- learnrhash::encode_obj(objs)
+          }
+
+          out
         }
       )
       shiny::observeEvent(input$hash_generate, {
@@ -52,8 +86,8 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
             )
           )
 
-        answered_question_ids <- qu$question_id
-        answered_exercise_ids <- ex$exercise_id
+        answered_question_ids <- qu$label
+        answered_exercise_ids <- ex$label
 
         qu_answered <- paste0(
           "Answered questions: ",
