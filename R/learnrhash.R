@@ -70,8 +70,7 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
       )
       shiny::observeEvent(input$hash_generate, {
         d <- tibble::tibble(hash = my_encoded_txt())
-        qu <- try(learnrhash::extract_questions(d, .data$hash), silent = TRUE)
-        ex <- try(learnrhash::extract_exercises(d, .data$hash), silent = TRUE)
+        qu <- try(learnrhash::extract_hash(d, .data$hash), silent = TRUE)
 
         labels <- names(shiny::reactiveValuesToList(input))
         idx <- grepl("tutorial-exercise-", labels)
@@ -85,33 +84,18 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
               x = labels[idx]
             )
           )
-
-        answered_question_ids <- qu$label
-        answered_exercise_ids <- ex$label
+        item_ids <- union(question_ids, exercise_ids)
+        answered_item_ids <- qu$label
 
         qu_answered <- paste0(
-          "Answered questions: ",
-          paste0(answered_question_ids, collapse = ", ")
+          "Answered items: ",
+          paste0(answered_item_ids, collapse = ", ")
         )
         qu_unanswered <- paste0(
-          if (is.null(question_ids)) {
-            NULL
-          } else {
-            paste0(
-              "Unanswered questions: ",
-              paste0(setdiff(question_ids, answered_question_ids), collapse = ", ")
-            )
-          }
+          "Unanswered items: ",
+          paste0(setdiff(item_ids, answered_item_ids), collapse = ", ")
         )
-        ex_answered <- paste0(
-          "Answered exercises: ",
-          paste0(answered_exercise_ids, collapse = ", ")
-        )
-        ex_unanswered <- paste0(
-          "Unanswered exercises: ",
-          paste0(setdiff(exercise_ids, answered_exercise_ids), collapse = ", ")
-        )
-        the_text <- paste0(c(qu_answered, ex_answered, qu_unanswered, ex_unanswered), collapse = "\n")
+        the_text <- paste0(c(qu_answered, qu_unanswered), collapse = "\n")
 
         attributes(the_text) <- NULL
         output$autodecode_summary <- shiny::renderText(the_text)
