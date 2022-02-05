@@ -91,14 +91,43 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
           "Answered items: ",
           paste0(answered_item_ids, collapse = ", ")
         )
+        unanswered_item_ids <- setdiff(item_ids, answered_item_ids)
         qu_unanswered <- paste0(
           "Unanswered items: ",
-          paste0(setdiff(item_ids, answered_item_ids), collapse = ", ")
+          if (length(unanswered_item_ids) > 0) {
+            paste0(unanswered_item_ids, collapse = ", ")
+          } else {
+            "(none)"
+          }
         )
-        the_text <- paste0(c(qu_answered, qu_unanswered), collapse = "\n")
+        the_text <- qu_unanswered
 
         attributes(the_text) <- NULL
         output$autodecode_summary <- shiny::renderText(the_text)
+
+        print(str(qu))
+        the_text_details <- paste0(
+          vapply(
+            seq_len(nrow(qu)),
+            function(k) {
+              paste0(qu[["label"]][k], " (",
+                     qu[["timestamp"]][k],
+                     "):\n  ",
+                     gsub("\n",
+                          "\n  ",
+                          gsub("[\n]*$",
+                               "",
+                               qu[["answer"]][[k]])),
+                     sep = "",
+                     collapse = "")
+            },
+            ""
+          ),
+          sep = "",
+          collapse = "\n\n"
+        )
+        attributes(the_text_details) <- NULL
+        output$autodecode_details <- shiny::renderText(the_text_details)
       })
     },
     envir = p
@@ -110,7 +139,8 @@ FL_autodecoder_ui <- function() {
   learnrhash:::check_not_server_context(parent.frame())
   shiny::tags$div(
     shiny::tags$h4("Summary of answers:"),
-    learnrhash:::wrapped_verbatim_text_output("autodecode_summary")
+    learnrhash:::wrapped_verbatim_text_output("autodecode_summary"),
+    learnrhash:::wrapped_verbatim_text_output("autodecode_details")
   )
 }
 
