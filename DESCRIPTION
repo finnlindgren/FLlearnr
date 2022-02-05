@@ -1,7 +1,7 @@
 Package: FLlearnr
 Type: Package
 Title: Custom Methods for learnr
-Version: 0.1.9
+Version: 0.1.10
 Author: Finn Lindgren <finn.lindgren@gmail.com>
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Description: Provides additional and customised logic useful for learnr and
@@ -21,6 +21,6 @@ Imports:
     rlang
 Remotes:
   rstudio/gradethis@f1a0aa4964c7b02bdb5329591adce2ac7d26160c,
-  rundel/learnrhash
+  rundel/learnrhash@e09e1c0f460c93f18b80b857d0462d0647039bae
 URL: https://github.com/finnlindgren/FLlearnr
 BugReports: https://github.com/finnlindgren/FLlearnr/issues

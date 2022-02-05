@@ -70,7 +70,7 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
       )
       shiny::observeEvent(input$hash_generate, {
         d <- tibble::tibble(hash = my_encoded_txt())
-        qu <- try(learnrhash::extract_hash(d, .data$hash), silent = TRUE)
+        qu <- try(learnrhash::extract_hash(d, hash = "hash"), silent = TRUE)
 
         labels <- names(shiny::reactiveValuesToList(input))
         idx <- grepl("tutorial-exercise-", labels)
