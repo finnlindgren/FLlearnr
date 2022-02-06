@@ -37,7 +37,6 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
           }
           if (FALSE){
             objs <- learnr::get_tutorial_state(session = session)
-            print(str(objs))
             if (strip_output) {
               objs <- purrr::map(objs, function(x) {
                 if ((x$type == "exercise") &&
@@ -51,7 +50,6 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
 
             if (FALSE) {
               objs <- learnr:::submissions_from_state_objects(objs)
-              print(str(objs))
               if (strip_output) {
                 objs <- purrr::map(objs, function(x) {
                   if ((x$type == "exercise_submission") &&
@@ -105,7 +103,6 @@ FL_autodecoder_logic <- function(question_ids = NULL) {
         attributes(the_text) <- NULL
         output$autodecode_summary <- shiny::renderText(the_text)
 
-        print(str(qu))
         the_text_details <- paste0(
           vapply(
             seq_len(nrow(qu)),
